@@ -1,0 +1,26 @@
+---
+# handlers file for jitsi-meet
+
+- name: restart prosody
+  ansible.builtin.service:
+    name: prosody
+    state: restarted
+  become: yes
+
+- name: restart jicofo
+  ansible.builtin.service:
+    name: jicofo
+    state: restarted
+  become: yes
+    
+- name: restart jvb
+  ansible.builtin.service:
+    name: jitsi-videobridge2
+    state: restarted
+  become: yes
+    
+- name: restart nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+  become: yes

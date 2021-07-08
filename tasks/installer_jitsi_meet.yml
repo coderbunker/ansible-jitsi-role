@@ -1,0 +1,43 @@
+---
+- name: "ajouter la clé, le dépôt, mettre à jour et installer"
+  block:
+    - name: "ajouter la clé du dépôt apt"
+      apt_key:
+        url: "{{ jitsi_apt_key_url }}"
+        id: "{{ jitsi_apt_key_id }}"
+        state: present 
+    - name: "ajouter le dépôt à la liste des dépôts du système"
+      apt_repository:
+        repo: "{{ jitsi_apt_depot }}"
+        state: present
+    - name: "mettre à jour la liste des paquets dispo."
+      apt:
+        update_cache: yes
+        cache_valid_time: "{{ age }}"
+    #- name: "préconfigurer jitsi-meet-web-config avec debconf"
+    #  debconf:
+    #    name: "{{ item.name }}"
+    #    question: "{{ item.question }}"
+    #    value: "{{ item.value }}"
+    #    vtype: "{{ item.vtype }}"
+    #  with_items: "{{ debconf_jitsi_meet_web_config }}"
+    #- name: "préconfigurer jitsi-meet-prosody avec debconf"
+    #  debconf:
+    #    name: "{{ item.name }}"
+    #    question: "{{ item.question }}"
+    #    value: "{{ item.value }}"
+    #    vtype: "{{ item.vtype }}"
+    #  with_items: "{{ debconf_jitsi_meet_prosody }}"
+    #- name: "préconfigurer jitsi-meet-tokens avec debconf"
+    #  debconf:
+    #    name: "{{ item.name }}"
+    #    question: "{{ item.question }}"
+    #    value: "{{ item.value }}"
+    #    vtype: "{{ item.vtype }}"
+    #  with_items: "{{ debconf_jitsi_meet_tokens }}"
+    - name: "installer les paquets .deb"
+      apt:
+        name: "{{ jitsi_paquets }}"
+        state: present
+  become: yes
+

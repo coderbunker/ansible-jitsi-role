@@ -1,0 +1,22 @@
+---
+
+#- name: "configurer hôte"
+#  include: configurer_hote.yml
+
+- name: "configurer parefeu"
+  include: configurer_parefeu.yml
+
+- name: "installer luajwtjitsi (source)"
+  include: installer_luajwtjitsi.yml
+
+- name: "installer prosody (dépôt packages.prosody.im)"
+  include: installer_prosody.yml
+  
+- name: "installer jitsi-meet (dépôt download.jitsi.org)"
+  include: installer_jitsi_meet.yml
+  
+- name: "configurer prosody"
+  include: configurer_prosody.yml
+
+- name: "configurer jitsi-meet"
+  include: configurer_jitsi_meet.yml

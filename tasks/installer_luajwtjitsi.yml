@@ -1,0 +1,16 @@
+---
+# tasks file for jitsi-meet
+
+- name: "ajouter la clé, le dépôt, mettre à jour et installer"
+  block:
+    - name: "mettre à jour la liste des paquets dispo."
+      apt:
+        update_cache: yes
+        cache_valid_time: "{{ age }}"
+    - name: "installer les paquets"
+      apt:
+        name: "{{ luajwtjitsi_paquets }}"
+        state: present
+    - name: "compiler et installer le module luajwtjitsi"
+      script: script-lua.sh
+  become: yes

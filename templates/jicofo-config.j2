@@ -1,0 +1,22 @@
+# Jitsi Conference Focus settings
+# sets the host name of the XMPP server
+#JICOFO_HOST=localhost
+JICOFO_HOST={{ hote }}
+
+# sets the XMPP domain (default: none)
+JICOFO_HOSTNAME={{ hote }}
+
+# sets the XMPP domain name to use for XMPP user logins
+JICOFO_AUTH_DOMAIN=auth.{{ hote }}
+
+# sets the username to use for XMPP user logins
+JICOFO_AUTH_USER={{ jicofo_utilisateur }}
+
+# sets the password to use for XMPP user logins
+JICOFO_AUTH_PASSWORD={{ jicofo_mot_de_passe }}
+
+# extra options to pass to the jicofo daemon
+JICOFO_OPTS=""
+
+# adds java system props that are passed to jicofo (default are for home and logging config file)
+JAVA_SYS_PROPS="-Dconfig.file=/etc/jitsi/jicofo/jicofo.conf -Dnet.java.sip.communicator.SC_HOME_DIR_LOCATION=/etc/jitsi -Djava.util.logging.config.file=/etc/jitsi/jicofo/logging.properties"

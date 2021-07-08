@@ -1,0 +1,35 @@
+---
+- name: "configurer Meet"
+  template:
+    src: "host-config.js.j2"
+    dest: "{{ meet_conf_chemin }}/{{ hote }}-config.js"
+    owner: root
+    group: root
+  become: yes
+
+- name: "configurer jicofo"
+  template:
+    src: "jicofo-config.j2"
+    dest: "{{ jicofo_conf_chemin }}/config"
+    owner: jicofo
+    group: jitsi
+  notify: restart jicofo
+  become: yes
+  
+- name: "configurer jicofo sip-comm"
+  template:
+    src: "sip-communicator.properties.j2"
+    dest: "{{ jicofo_conf_chemin }}/sip-communicator.properties"
+    owner: jicofo
+    group: jitsi
+  notify: restart jicofo
+  become: yes
+  
+- name: "configurer videobridge (jvb)"
+  template:
+    src: "videobridge-config.j2"
+    dest: "{{ jvb_conf_chemin }}/config"
+    owner: jvb
+    group: jitsi
+  notify: restart jvb
+  become: yes

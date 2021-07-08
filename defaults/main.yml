@@ -1,0 +1,94 @@
+---
+## Variables à personnaliser pour votre installation
+hote: "nomdelhote" # Nom de l'hôte (FQDN si public sur Internet)
+
+# luajwtjitsi (source)
+luajwtjitsi_paquets: "['gcc', 'unzip', 'lua5.2', 'liblua5.2-0', 'liblua5.2-0-dbg', 'liblua5.2-dev','luarocks']"
+
+# prosody (dépôt packages.prosody.im)
+prosody_paquets: "['prosody', 'nginx']"
+prosody_apt_key_url: https://packages.prosody.im/debian/pubkey.asc
+prosody_apt_key_id: 107D65A0A148C237FDF00AB47393D7E674D9DBB5
+prosody_apt_depot: deb http://packages.prosody.im/debian focal main
+# prosody (configuration)
+prosody_conf: "prosody.cfg.lua"
+prosody_conf_chemin: "/etc/prosody"
+prosody_hote_conf_chemin: "/etc/prosody/conf.avail"
+prosody_component_ports: "5347"
+prosody_component_interface: "0.0.0.0"
+prosody_c2s_require_encryption: "false"
+prosody_virtualhost_authentication: "token"
+prosody_app_id: ""
+prosody_app_secret: ""
+nginx_hote_conf_chemin: "/etc/nginx/sites-available"
+
+# jitsi-meet (dépôt download.jitsi.org)
+jitsi_paquets: "['jitsi-meet', 'jitsi-meet-tokens']" 
+jitsi_apt_key_url: https://download.jitsi.org/jitsi-key.gpg.key
+jitsi_apt_key_id: FFD65A0DA2BEBDEB73D44C8BB4D2D216F1FD7806
+jitsi_apt_depot: deb https://download.jitsi.org stable/
+# jitsi-meet (configuration)
+meet_conf_chemin: "/etc/jitsi/meet"
+jicofo_conf_chemin: "/etc/jitsi/jicofo"
+jvb_conf_chemin: "/etc/jitsi/videobridge"
+meet_roles_token: "true"
+jitsi_meet_cert_choice: "Generate a new self-signed certificate (You will later get a chance to obtain a Let's encrypt certificate)"
+jvb_secret: "TTv6//QsRr5w"
+jicofo_mot_de_passe: ""
+jicofo_utilisateur: "focus"
+turn_secret: ""
+
+# réponses aux questions de debconf 
+# jitsi-meet-web-config.deb
+debconf_jitsi_meet_web_config:
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/jvb-hostname
+    value: "{{ hote }}"
+    vtype: string
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/cert-choice
+    value: "{{ jitsi_meet_cert_choice }}"
+    vtype: string
+  - name: jitsi-meet-web-config
+    question: jitsi-videobridge/jvb-hostname
+    value: "{{ hote }}"
+    vtype: string
+# jitsi-meet-prosody.deb
+debconf_jitsi_meet_prosody:
+  - name: jitsi-meet-prosody
+    question: jitsi-videobridge/jvbsecret
+    value: "{{ jvb_secret }}"
+    vtype: password
+  - name: jitsi-meet-prosody
+    question: jicofo/jicofo-authpassword
+    value: "{{ jicofo_mot_de_passe }}"
+    vtype: password
+  - name: jitsi-meet-prosody
+    question: jicofo/jicofo-authuser
+    value: "{{ jicofo_utilisateur }}"
+    vtype: string
+  - name: jitsi-meet-prosody
+    question: jitsi-videobridge/jvb-hostname
+    value: "{{ hote }}"
+    vtype: string
+  - name: jitsi-meet-prosody
+    question: jitsi-meet-prosody/jvb-hostname
+    value: "{{ hote }}"
+    vtype: string
+  - name: jitsi-meet-prosody
+    question: jitsi-meet-prosody/turn-secret
+    value: "{{ turn_secret }}"
+    vtype: password
+# jitsi-meet-tokens.deb
+debconf_jitsi_meet_tokens:
+  - name: jitsi-meet-tokens
+    question: jitsi-meet-tokens/appsecret
+    value: "{{ prosody_app_secret }}"
+    vtype: password
+  - name: jitsi-meet-tokens
+    question: jitsi-meet-tokens/appid
+    value: "{{ prosody_app_id }}"
+    vtype: string
+
+# pour ne pas mettre à jour le cache de apt pour rien
+age: 14400 # 14400 sec. ou 4 heures

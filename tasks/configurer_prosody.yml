@@ -1,0 +1,28 @@
+---
+
+- name: "configurer prosody (global)"
+  template:
+    src: "{{ prosody_conf }}.j2"
+    dest: "{{ prosody_conf_chemin }}/{{ prosody_conf }}"
+    owner: root
+    group: prosody
+  notify: restart prosody
+  become: yes
+
+- name: "configurer prosody (hôte)"
+  template:
+    src: "host.cfg.lua.j2"
+    dest: "{{ prosody_hote_conf_chemin }}/{{ hote }}.cfg.lua"
+    owner: root
+    group: root
+  notify: restart prosody
+  become: yes
+  
+- name: "configurer nginx (hôte)"
+  template:
+    src: "nginx-vhost.conf.j2"
+    dest: "{{ nginx_hote_conf_chemin }}/{{ hote }}.conf"
+    owner: root
+    group: root
+  notify: restart nginx
+  become: yes

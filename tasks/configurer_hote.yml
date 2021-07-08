@@ -1,0 +1,13 @@
+---
+- name: "configurer le hostname"
+  command: hostnamectl set-hostname {{ hote }}
+  become: yes
+  
+- name: "configurer /etc/hosts"
+  template:
+    src: "hosts.j2"
+    dest: "/etc/hosts"
+    owner: root
+    group: root
+  become: yes
+

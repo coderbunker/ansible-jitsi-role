@@ -1,0 +1,36 @@
+---
+- name: "ajouter la clé, le dépôt, mettre à jour et installer"
+  block:
+    - name: "ajouter la clé du dépôt apt"
+      apt_key:
+        url: "{{ prosody_apt_key_url }}"
+        id: "{{ prosody_apt_key_id }}"
+        state: present 
+    - name: "ajouter le dépôt à la liste des dépôts du système"
+      apt_repository:
+        repo: "{{ prosody_apt_depot }}"
+        state: present
+    - name: "mettre à jour la liste des paquets dispo."
+      apt:
+        update_cache: yes
+        cache_valid_time: "{{ age }}"
+    - name: "installer les paquets"
+      apt:
+        name: "{{ prosody_paquets }}"
+        state: present
+    - name: "ajuster l'accès à localhost.key pour prosody"
+      file:
+        path: /etc/prosody/certs/localhost.key
+        owner: root
+        group: prosody
+        mode: 0644
+    - name: "copier certificat local"
+      copy:
+        src: /etc/prosody/certs/localhost.key
+        dest: /etc/ssl/localhost.key
+        remote_src: yes
+        owner: root
+        group: prosody
+        mode: 0644
+  become: yes
+
